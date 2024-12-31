@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ app['app_name'] }} - Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            background: #e0e7ef;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .app-header {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        .app-icon {
+            flex-shrink: 0;
+            width: 200px;
+            height: 200px;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .app-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+        .app-info {
+            flex-grow: 1;
+        }
+        .app-info h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            color: #333;
+        }
+        .app-info p {
+            margin: 10px 0;
+            font-size: 1.2rem;
+            color: #555;
+        }
+        .screenshots {
+            margin-top: 40px;
+        }
+        .screenshots h3 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .screenshot-gallery {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+        }
+        .screenshot-gallery img {
+            flex-shrink: 0;
+            width: 160px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .screenshot-gallery img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+        .app-description {
+            margin-top: 40px;
+            line-height: 1.6;
+            color: #333;
+            font-size: 1.2rem;
+        }
+        a {
+            color: #007BFF;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="app-header">
+            <img src="{{ app['app_img'] }}" alt="{{ app['app_name'] }} Icon" class="app-icon">
+            <div class="app-info">
+                <h1>{{ app['app_name'] }}</h1>
+                <p><strong>Rating:</strong> {{ app['app_ratings'] }}</p> <!-- Text-based rating -->
+                <p><strong>Category:</strong> {{ app.get('category', 'N/A') }}</p>
+                <p><strong>Developer:</strong> {{ app['app_developer'] }}</p>
+                <p><strong>Price:</strong> {{ app['app_price'] }}</p>
+                <a href="{{ app['app_url'] }}" target="_blank">View on Google Play Store</a>
+            </div>
+        </div>
+        <div class="screenshots">
+            <h3>Screenshots</h3>
+            <div class="screenshot-gallery">
+                {% for screenshot in app['img_arr'] %}
+                <img src="{{ screenshot }}" alt="Screenshot">
+                {% endfor %}
+            </div>
+        </div>
+        <div class="app-description">
+            <h3>Description</h3>
+            <p>{{ app['content'] }}</p>
+        </div>
+    </div>
+</body>
+</html>

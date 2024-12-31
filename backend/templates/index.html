@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Android Apps</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            text-align: center;
+            margin: 0;
+        }
+
+        h2 {
+            margin-top: 20px;
+            font-size: 2rem;
+            color: #2c3e50;
+        }
+
+        .refresh-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #2c3e50;
+            color: white;
+            font-size: 1rem;
+            border-radius: 20px;
+            text-decoration: none;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .refresh-button:hover {
+            background-color: #34495e;
+        }
+
+        #loading {
+            display: none;
+            font-size: 1.5rem;
+            color: #2c3e50;
+        }
+
+        #app-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .app-card {
+            background-color: rgba(44, 62, 80, 0.1);
+            border-radius: 20px;
+            width: 180px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .app-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .app-card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+        }
+
+        .app-card h3 {
+            font-size: 1.1rem;
+            color: #34495e;
+        }
+
+        .app-card p {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+        .app-card a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 12px;
+            background-color: #2980b9;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+        }
+
+        .app-card a:hover {
+            background-color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <h2>Top Android Apps</h2>
+    <button class="refresh-button" onclick="refreshList()">Refresh List</button>
+    <div id="loading">Loading... Please wait.</div>
+    <div id="app-list">
+        {% for app in apps %}
+        <div class="app-card">
+            <img src="{{ app['app_img'] }}" alt="{{ app['app_name'] }} Icon">
+            <h3>{{ app['app_name'] }}</h3>
+            <p>Rating: {{ app['app_ratings'] }}</p>
+            <a href="{{ url_for('app_detail', package_name=app['app_package']) }}">View Details</a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        function refreshList() {
+            const loading = document.getElementById("loading");
+            loading.style.display = "block";
+
+            fetch("/trigger-scraper", { method: "POST" })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        window.location.href = "/";
+                    } else {
+                        alert("Error: " + data.error);
+                        loading.style.display = "none";
+                    }
+                })
+                .catch(error => {
+                    alert("An error occurred: " + error);
+                    loading.style.display = "none";
+                });
+        }
+    </script>
+</body>
+</html>
